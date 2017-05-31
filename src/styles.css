@@ -1,1 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    font-family: 'Open Sans', sans-serif;
+    color:lightgrey;
+    background-color:black;
+}
+
+
+.page-title {
+    font-size:24px;
+    text-align:center;
+}
+
+hr {
+    height:0.5px;
+    border-width:0;
+	color:white;
+	background-color:white;
+}
+
+a:link 
+{
+	color: #FFFFE0; text-decoration:none;
+}
+a:active 
+{
+	color: #FFFFE0; text-decoration:none;
+}
+a:visited 
+{
+	color: #FFFFE0; text-decoration:none;
+}
+a:hover 
+{
+	color: #FFFFFF; text-decoration:none;
+}
