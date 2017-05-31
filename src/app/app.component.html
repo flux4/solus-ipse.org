@@ -1,5 +1,10 @@
-<div class="header">
-	<a class="page-title" routerLink="" routerLinkActive="active">Solus Ipse</a>
+<div class="header_toggle" (click)="header_hidden = !header_hidden">
+	<span [hidden]="header_hidden">&#x21DE;</span>
+	<span [hidden]="!header_hidden">&#x21DF;</span>
 </div>
-<hr/>
+<div class="header" [hidden]="header_hidden">
+	<div><a class="page-title" routerLink="" routerLinkActive="active">Solus Ipse</a></div>
+	<hr/>
+</div>
+
 <router-outlet></router-outlet>
