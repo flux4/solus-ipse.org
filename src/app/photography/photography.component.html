@@ -1,0 +1,8 @@
+<div [hidden]="albums != null" style="text-align:center;">{{ error_message }}</div>
+<div class="album_list">
+  <ul>
+    <li *ngFor="let album of albums">
+      <a [routerLink]="['/photography', album.id]">{{album.name}}</a>
+    </li>
+  </ul>
+</div>

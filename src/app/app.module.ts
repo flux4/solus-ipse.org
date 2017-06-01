@@ -7,12 +7,16 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { PageNotFoundComponent } from './page-not-found.component';
+import { PhotographyComponent } from './photography/photography.component';
+import { PhotographyAlbumComponent } from './photography-album/photography-album.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainMenuComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    PhotographyComponent,
+    PhotographyAlbumComponent
   ],
   imports: [
     BrowserModule,
