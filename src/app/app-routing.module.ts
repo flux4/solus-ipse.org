@@ -13,22 +13,22 @@ const app_routes: Routes = [
 		component: MainMenuComponent,
     data: {
       pages:[
-        {
+        /*{
           name:"writing",
           path:"/writing"
-        },{
+        },*/{
           name:"programming",
           path:"/programming"
         },{
           name:"photography",
           path:"/photography"
-        },{
+        /*},{
           name:"inspiration",
-          path:"/inspiration"
+          path:"/inspiration"*/
         }
       ]
     }
-  },{
+  /*},{
     path: 'writing',
     component: MainMenuComponent,
     data: {
@@ -47,19 +47,19 @@ const app_routes: Routes = [
           path:"/writing/ancientlore"
         }
       ]
-    }
+    }*/
   },{
     path: 'programming',
     component: MainMenuComponent,
     data: {
       pages:[
-        {
+        /*{
           name:"apps",
           path:"/programming/apps"
         },{
           name:"articles",
           path:"/programming/articles"
-        },{
+        },*/{
           name:"github",
           path:"https://github.com/simian201",
           external:true
@@ -76,9 +76,9 @@ const app_routes: Routes = [
   },{
     path: 'photography/:id',
     component: PhotographyAlbumComponent
-  },{
+  /*},{
     path: 'inspiration',
-    component: MainMenuComponent
+    component: MainMenuComponent*/
   },{
     path: '**',
     component: PageNotFoundComponent
