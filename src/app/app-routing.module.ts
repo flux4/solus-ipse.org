@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { PhotographyComponent } from './photography/photography.component';
-import { PhotographyAlbumComponent } from './photography-album/photography-album.component';
+import { PhotographyAlbumComponent } from './photography/photography-album.component';
 
 
 const app_routes: Routes = [
@@ -74,7 +74,7 @@ const app_routes: Routes = [
     path: 'photography',
     component: PhotographyComponent
   },{
-    path: 'photography/id:',
+    path: 'photography/:id',
     component: PhotographyAlbumComponent
   },{
     path: 'inspiration',
