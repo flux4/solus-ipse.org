@@ -13,8 +13,13 @@ export class PhotographyAlbumComponent implements OnInit {
 
   private route: ActivatedRoute;
   private photo_service: PhotoService;
-  private album = null;
-  private error_message = null;
+  public album = null;
+  public error_message = null;
+
+  public img_width=0;
+  public img_height=0;
+
+  
 
   constructor(route: ActivatedRoute, photo_service: PhotoService) {
     this.route = route;
@@ -26,6 +31,8 @@ export class PhotographyAlbumComponent implements OnInit {
     this.photo_service.getAlbumDetails(album_id,
       (data) => {
         this.album = data;
+        this.img_width = document.body.offsetWidth;
+        this.img_height = document.body.offsetHeight;
       },
       (err) => {
         this.error_message = "error loading flickr albums";

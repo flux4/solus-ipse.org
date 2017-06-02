@@ -1,7 +1,7 @@
 <div [hidden]="album != null" style="text-align:center;">{{ error_message }}</div>
-<div *ngIf="album != null" class="album_container">
+<div id="album_container" *ngIf="album != null">
   <a data-flickr-embed="true"  href="https://www.flickr.com/photos/154623445@N05/albums/{{album.id}}" title="{{album.name}}">
-    <img src="{{album.first_photo_url}}" width="427" height="640" alt="{{album.name}}">
+    <img id="album_img" src="{{album.first_photo_url}}" height="{{img_height}}" alt="{{album.name}}">
   </a>
-  <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+  <!--<script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>-->
 </div>

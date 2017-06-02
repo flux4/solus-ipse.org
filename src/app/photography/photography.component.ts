@@ -14,9 +14,9 @@ import { PhotoService } from './photo.service';
 
 export class PhotographyComponent implements OnInit {
 
-  private error_message = null;
   private photo_service;
-  private albums;
+  public error_message = null;
+  public albums;
 
   constructor(photo_service: PhotoService)
   {

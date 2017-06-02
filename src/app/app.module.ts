@@ -9,6 +9,7 @@ import { MainMenuComponent } from './main-menu/main-menu.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { PhotographyComponent } from './photography/photography.component';
 import { PhotographyAlbumComponent } from './photography/photography-album.component';
+import { ApaxComponent } from './apax/apax.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PhotographyAlbumComponent } from './photography/photography-album.compo
     MainMenuComponent,
     PageNotFoundComponent,
     PhotographyComponent,
-    PhotographyAlbumComponent
+    PhotographyAlbumComponent,
+    ApaxComponent
   ],
   imports: [
     BrowserModule,
