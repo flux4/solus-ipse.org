@@ -5,6 +5,7 @@ import { MainMenuComponent } from './main-menu/main-menu.component';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { PhotographyComponent } from './photography/photography.component';
 import { PhotographyAlbumComponent } from './photography/photography-album.component';
+import { ApaxComponent } from './apax/apax.component';
 
 
 const app_routes: Routes = [
@@ -53,13 +54,13 @@ const app_routes: Routes = [
     component: MainMenuComponent,
     data: {
       pages:[
-        /*{
+        {
           name:"apps",
           path:"/programming/apps"
-        },{
+        /*},{
           name:"articles",
-          path:"/programming/articles"
-        },*/{
+          path:"/programming/articles"*/
+        },{
           name:"github",
           path:"https://github.com/simian201",
           external:true
@@ -70,6 +71,24 @@ const app_routes: Routes = [
         }
       ]
     }
+  },{
+    path: 'programming/apps',
+    component: MainMenuComponent,
+    data: {
+      pages:[
+        {
+          name:'apax',
+          path:'/programming/apps/apax'
+        },
+        {
+          name:'kybos',
+          path:'/programming/apps/kybos'
+        }
+      ]
+    }
+  },{
+    path: 'programming/apps/apax',
+    component: ApaxComponent
   },{
     path: 'photography',
     component: PhotographyComponent

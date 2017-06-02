@@ -1,3 +1,33 @@
-<p>
-  apax works!
-</p>
+<div id="container">
+  <div id="leftdiv" >
+    <table>
+      <tr>
+        <td>width</td>
+        <td><input type="text" id="img_width" [value]="mp.width" (change)="setWidth($event.target.value)"/></td>
+      </tr>
+      <tr>
+        <td>height</td>
+        <td><input type="text" id="img_height" [value]="mp.height" (change)="setHeight($event.target.value)"/></td>
+      </tr>
+      <tr>
+        <td>scale</td>
+        <td><input type="text" id="img_scale" [value]="mp.scale" (change)="setScale($event.target.value)"/></td>
+      </tr>
+    </table>
+  </div>
+  <div id="maindiv">
+    <table>
+      <tr>
+        <td>
+          <canvas id="cmain" width="512" height="512" (mousedown)="mouseDown($event)" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)" (mouseleave)="mouseLeave($event)"></canvas>
+        </td>
+        <td valign="top">
+          <div id="palettediv"></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="rightdiv">
+    <span>filler</span>
+  </div>
+</div>

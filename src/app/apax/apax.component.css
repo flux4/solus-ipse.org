@@ -1,0 +1,45 @@
+
+
+input[type=text] {
+    background-color:black;
+    color:white;
+    border: 0.5px solid gray;
+    width:100%;
+    padding: 2px;
+}
+
+input:focus {
+    outline-width: 0;
+}
+
+#cmain {
+    border: 0.5px solid gray;
+}
+#palettediv {
+    max-width:20px;
+}
+
+
+
+#maindiv > table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+#container > div {
+    display:inline-block;
+}
+
+
+#maindiv {
+    width:80%;
+}
+#leftdiv {
+    width:10%;
+    float:left;
+}
+#rightdiv {
+    width:10%;
+    float:right;
+}
