@@ -1,5 +1,6 @@
 <div id="container">
-  <div id="leftdiv" >
+  <div id="leftdiv">
+    <div class='menu_title'>image settings</div>
     <table>
       <tr>
         <td>width</td>
@@ -14,18 +15,56 @@
         <td><input type="text" id="img_scale" [value]="mp.scale" (change)="setScale($event.target.value)"/></td>
       </tr>
     </table>
-  </div>
-  <div id="maindiv">
-    <table>
-      <tr>
+    <div style="margin:5px;">
+      <div style="display:inline" class="text_button" (click)="clearImage()">clear</div>&nbsp;
+      <div style="display:inline" class="text_button" (click)="saveImage()">save</div>
+      <div style="display:inline" class="text_button" (click)="toggleTransparency()">{{mp.transparency? 'disable transparency': 'enable transparency'}}</div>
+    </div>
+    <br/>
+    <div class='menu_title'>symmetry stack</div>
+    <table id="symmetry_list">
+      <tr *ngFor="let symmetry of symmetries; let i = index">
         <td>
-          <canvas id="cmain" width="512" height="512" (mousedown)="mouseDown($event)" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)" (mouseleave)="mouseLeave($event)"></canvas>
+          <div title="remove" class="button" (click)="deleteSymmetry(i)">&#x2A09;</div>
+          <div title="move up" class="button" (click)="moveSymmetryUp(i)">&#8613;</div>
+          <div title="move down" class="button" (click)="moveSymmetryDown(i)">&#8615;</div>
         </td>
-        <td valign="top">
-          <div id="palettediv"></div>
+        <td>
+          <div [class]="symmetry.type == 'rotate'? 'button active': 'button inactive'" [title]="symmetry.type != 'rotate'? 'change to rotator': 'rotate'" (click)="setSymmetryType(i,'rotate')">&#8635;</div>
+          <div [class]="symmetry.type == 'reflect'? 'button active': 'button inactive'" [title]="symmetry.type != 'reflect'? 'change to reflect': 'reflect'" (click)="setSymmetryType(i,'reflect')">&#x2733;</div>
+          <div [class]="symmetry.type == 'tile'? 'button active': 'button inactive'" [title]="symmetry.type != 'tile'? 'change to tile': 'tile'" (click)="setSymmetryType(i,'tile')">&#65283;</div>
+        </td>
+        <td>
+          <div *ngIf="symmetry.type == 'rotate'">
+            <input type="text" class="shorttext" maxlength="2" [value]="symmetry.n_sectors" (change)="setRotator(i,$event.target.value)"/>
+          </div>
+          <div *ngIf="symmetry.type == 'reflect'">
+            <div class="button" [class]="symmetry.value == '-'? 'button active': 'button inactive'" title="horizontal symmetry" (click)="symmetry.value = '-'">&#x2012;</div>
+            <div class="button" [class]="symmetry.value == '|'? 'button active': 'button inactive'" title="vertical symmetry" (click)="symmetry.value = '|'">&#x2758;</div>
+            <div class="button" [class]="symmetry.value == '/'? 'button active': 'button inactive'" title="diagonal symmetry" (click)="symmetry.value = '/'">/</div>
+            <div class="button" [class]="symmetry.value == '\\'? 'button active': 'button inactive'" title="reverse diagonal symmetry" (click)="symmetry.value = '\\'">\</div>
+          </div>
+          <div *ngIf="symmetry.type == 'tile'">
+            <input type="text" class="shorttext" maxlength="2" [value]="symmetry.nx" (change)="symmetry.nx = $event.target.value"/>&nbsp;x&nbsp;<input type="text" class="shorttext" maxlength="2" [value]="symmetry.ny" (change)="symmetry.ny = $event.target.value"/>
+          </div>
         </td>
       </tr>
     </table>
+    <div id="add_symmetry_bt" class="button" title="add new symmetry" (click)="addSymmetry()">+</div>
+  </div>
+  <div id="maindiv">
+    <div id="maindivinner">
+      <table>
+        <tr>
+          <td>
+            <canvas id="cmain" width="512" height="512" (mousedown)="mouseDown($event)" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)" (mouseleave)="mouseLeave($event)"></canvas>
+          </td>
+          <td valign="top">
+            <div id="palettediv"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
   <div id="rightdiv">
     <span>filler</span>

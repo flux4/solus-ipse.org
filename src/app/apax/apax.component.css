@@ -3,9 +3,14 @@
 input[type=text] {
     background-color:black;
     color:white;
-    border: 0.5px solid gray;
-    width:100%;
+    border: 0.5px solid dimgrey;
     padding: 2px;
+}
+
+
+
+.menu_title {
+    border-bottom: 0.5px solid gray;
 }
 
 input:focus {
@@ -20,7 +25,6 @@ input:focus {
 }
 
 
-
 #maindiv > table {
     margin-left: auto;
     margin-right: auto;
@@ -31,15 +35,106 @@ input:focus {
     display:inline-block;
 }
 
-
 #maindiv {
-    width:80%;
+    position:absolute;
+    left:50%;
 }
+
+#maindivinner {
+    position:relative;
+    left:-50%;
+}
+
 #leftdiv {
-    width:10%;
+    min-width:300px;
+    width:16%;
     float:left;
+    margin-left:10px;
 }
 #rightdiv {
-    width:10%;
+    width:16%;
     float:right;
+    margin-right:10px;
 }
+
+#symmetry_list {
+    border-collapse: collapse;
+    width:100%;
+}
+
+#symmetry_list tbody tr td {
+    width:33%;
+    text-align:center;
+    cursor:default;
+}
+
+#symmetry_list tr td div {
+    width:33%;
+    
+}
+
+#symmetry_list tr td div {
+    display:inline;
+}
+
+#symmetry_list tr td {
+    min-width:40px;
+    padding:4px;
+}
+
+
+
+.button {
+    padding-left:4px;
+    padding-right:4px;
+    vertical-align: middle;
+    cursor:default;
+}
+
+.button.active {
+    color:white;
+}
+
+.button.inactive {
+    color:dimgray;
+}
+
+
+.text_button {
+    border:0.5px solid dimgray;
+    cursor:default;
+    padding-left:6px;
+    padding-right:6px;
+    padding-bottom:4px;
+    vertical-align: middle;
+}
+
+
+
+#symmetry_list {
+    border:none;
+    border-collapse: collapse;
+}
+
+#symmetry_list td {
+    border-left: 0.5px solid grey;
+    border-right: 0.5px solid grey;
+}
+
+#symmetry_list td:first-child {
+    border-left: none;
+}
+
+#symmetry_list td:last-child {
+    border-right: none;
+}
+
+#add_symmetry_bt {
+    text-align:center;
+    
+}
+
+.shorttext {
+    width:20px;
+}
+

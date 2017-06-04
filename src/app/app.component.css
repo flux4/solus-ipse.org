@@ -1,6 +1,7 @@
 .header {
 	text-align:center;
 	white-space: nowrap;
+	
 }
 .header_toggle {
 	cursor:pointer;
@@ -18,4 +19,14 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+
+#page_title {
+	font-size:24px;
+}
+
+.header > div > a {
+	display:inline;
+	vertical-align: middle;
 }

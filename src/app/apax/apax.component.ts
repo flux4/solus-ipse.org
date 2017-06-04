@@ -63,6 +63,7 @@ class PState
 		return r;
 	}
 
+	// these enable rotations
 	toCenter(p)
 	{
 		return [p[0] - this.wo2, p[1] - this.ho2];
@@ -240,28 +241,110 @@ export class ApaxComponent implements OnInit
 		palette: this.createGrayscalePalette(4),
 		width: 64,
 		height: 64,
-		scale: 4,
+		scale: 6,
 		brush: 1,
 		transparency: false,
 		seed: 0 // new Date().getTime();
 		
 	}
 
+	public symmetries: any[] = [
+		{
+			type:'reflect',
+			value:'|'
+		},{
+			type:'tile',
+			nx:"4",
+			ny:"4"
+		}
+	];
+
+
+
+
+	addSymmetry() {
+		this.symmetries.push({
+			type:'none',
+			value:0
+		});
+	}
+
+	deleteSymmetry(i) {
+		this.symmetries.splice(i,1);
+	}
+
+	setSymmetryType(i,type) {
+		let sym: any = this.symmetries[i];
+		if (sym.type == type) return;
+		sym.type = type;
+		if (type == 'rotate') {
+			sym.n_sectors = 2;
+		} else if (type == 'reflect') {
+			sym.value = '|';
+		} else if (type == 'tile') {
+			sym.nx = 2;
+			sym.ny = 2;
+		}
+	}
+
+	moveSymmetryUp(i) {
+		if (i > 0) {
+			var t = this.symmetries[i];
+			this.symmetries[i] = this.symmetries[i-1];
+			this.symmetries[i-1] = t;
+		}
+	}
+
+	moveSymmetryDown(i) {
+		if (i < this.symmetries.length-1) {
+			var t = this.symmetries[i];
+			this.symmetries[i] = this.symmetries[i+1];
+			this.symmetries[i+1] = t;
+		}
+	}
+
+	setRotator(i, n_sectors) {
+		var sym = this.symmetries[i];
+		sym.n_sectors = n_sectors;
+		let a: number = 2*Math.PI/n_sectors;
+		this.symmetries[i].ca = Math.cos(a);
+		this.symmetries[i].sa = Math.sin(a);
+	}
+
+
+
+
+	clearImage() {
+		for (var i=0; i<this.state.width; ++i) {
+			for (var j=0; j<this.state.height; ++j) {
+				this.state.data[i][j] = (this.mp.transparency)? -1: 0;
+			}
+		}
+		this.renderImage();
+	}
+
+	saveImage() {
+		window.open(this.canvas.toDataURL("image/png"));
+	}
+
+	toggleTransparency() {
+		this.mp.transparency = !this.mp.transparency;
+		if (!this.mp.transparency) {
+			for (var i=0; i<this.state.width; ++i) {
+				for (var j=0; j<this.state.height; ++j) {
+					if (this.state.data[i][j] == -1) {
+						this.state.data[i][j] = 0;
+					}
+				}
+			}
+			this.renderImage();
+		}
+		this.refreshPaletteDiv();
+	}
+
+
+
 	constructor() {}
-
-
-	polarToRectangular(r, t)
-	{
-		var x = r*Math.cos(t);
-		var y = r*Math.sin(t);
-		return [x, y];
-	}
-	rectangularToPolar(x, y)
-	{
-		var r = Math.sqrt(x*x+y*y);
-		var t = Math.atan2(y, x);
-		return [r, t];
-	}
 
 
 	renderImage()
@@ -306,15 +389,89 @@ export class ApaxComponent implements OnInit
 	}
 
 
+
+
+	polarToRectangular(r, t)
+	{
+		var x = r*Math.cos(t);
+		var y = r*Math.sin(t);
+		return [x, y];
+	}
+	rectangularToPolar(x, y)
+	{
+		var r = Math.sqrt(x*x+y*y);
+		var t = Math.atan2(y, x);
+		return [r, t];
+	}
+	towardZero(a)
+	{
+		return (a > 0.0)? Math.floor(a+0.5): Math.ceil(a-0.5);
+	}
+
+	rotate(sym, p)
+	{
+		return [p[0]*sym.ca - p[1]*sym.sa,
+				p[0]*sym.sa + p[1]*sym.ca];
+	}
+
+	transform(sym: any, p) {
+		if (sym.type == 'rotate') {
+			var r = [];
+			p = this.state.toCenter(p);
+			for (var i=0; i<sym.n_sectors; ++i)
+			{
+				var p2 = [this.towardZero(p[0]), this.towardZero(p[1])]; // floor toward the center
+				p2 = this.state.fromCenter(p2);
+				var pi = Math.floor(p2[0]);
+				var pj = Math.floor(p2[1]);
+				r.push([pi,pj]);
+				p = this.rotate(sym, p);
+			}
+			return r;
+		} else if (sym.type == 'reflect') {
+			var ai = p[0], aj = p[1];
+			var bi = this.state.width-ai-1, bj = this.state.height-aj-1;
+			if (sym.value == '|') 
+			{
+				return [[ai,aj],[bi,aj]];
+			}
+			else if (sym.value == '-')
+			{
+				return [[ai,aj],[ai,bj]];
+			}
+			else if (sym.value == '\\')
+			{
+				return [[ai,aj],[aj,ai]];
+			}
+			else if (sym.value == '/')
+			{
+				return [[ai,aj],[bj,bi]];
+			}
+		} else if (sym.type == 'tile') {
+			var sx = Math.floor(this.state.width/sym.nx);
+			var sy = Math.floor(this.state.height/sym.ny);
+			var r = [];
+			var ox = p[0]%sx;
+			var oy = p[1]%sy;
+			for (var i=0; i<sym.nx; ++i)
+			{
+				for (var j=0; j<sym.ny; ++j)
+				{
+					r.push([ox+i*sx,oy+j*sy]);
+				}
+			}
+			return r;
+		}
+	}
 	drawPixel(p, v)
 	{
 		var pts = [p];
-		for (var i=0; i<this.transforms.length; ++i)
+		for (var i=0; i<this.symmetries.length; ++i)
 		{
 			let pts2 = [];
 			for (var j=0; j<pts.length; ++j)
 			{
-				pts2 = pts2.concat(this.transforms[i].plot(this.state, pts[j]));
+				pts2 = pts2.concat(this.transform(this.symmetries[i], pts[j]));
 			}
 			pts = pts2;
 		}
@@ -479,7 +636,7 @@ export class ApaxComponent implements OnInit
 
 
 	private isNumeric(n) {
-	return !isNaN(parseFloat(n)) && isFinite(n);
+		return !isNaN(parseFloat(n)) && isFinite(n);
 	}
 	
 	setWidth(v) {
@@ -526,7 +683,7 @@ export class ApaxComponent implements OnInit
 
 
 
-		this.transforms = [new PReflect('-'),new PReflect('|'), new PTile(4,4)];
+		this.transforms = [new PReflect('\\'),new PReflect('/'), new PTile(4,4)];
 		//this.transforms = [new PRotate(2), new PReflect('|')];
 
 		this.refreshCursor();

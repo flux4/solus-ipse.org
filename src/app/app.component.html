@@ -3,7 +3,10 @@
 	<span [hidden]="!header_hidden">&#x21DF;</span>
 </div>
 <div class="header" [hidden]="header_hidden">
-	<div><a class="page-title" routerLink="" routerLinkActive="active">Solus Ipse</a></div>
+	<div>
+		<a id="page_title" routerLink="" routerLinkActive="active">Solus Ipse</a>
+		<a *ngFor="let bc of breadcrumbs" routerLink="{{ bc.path }}" (mousedown)="breadcrumb_clicked = true" routerLinkActive="active">&nbsp;&nbsp;-&nbsp;&nbsp;{{ bc.name }}</a>
+	</div>
 	<hr/>
 </div>
 
