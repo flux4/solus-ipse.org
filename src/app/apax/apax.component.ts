@@ -102,7 +102,10 @@ class PState
 @Component({
   selector: 'app-apax',
   templateUrl: './apax.component.html',
-  styleUrls: ['./apax.component.css']
+  styleUrls: ['./apax.component.css'],
+  host: {
+    '(document:click)': 'documentClick($event)',
+  }
 })
 
 export class ApaxComponent implements OnInit
@@ -135,8 +138,6 @@ export class ApaxComponent implements OnInit
 
   public brush: number = 0;
 
-
-
   public toRGBText(c): string {
     if (this.mp.transparency) {
       return 'rgba('+c[0]+','+c[1]+','+c[2]+','+c[3]+')';
@@ -167,8 +168,36 @@ export class ApaxComponent implements OnInit
   }
 
 
-  openColorPalette() {
+  private color_picker_first_open = false;
 
+  documentClick(evt) {
+    if (this.color_picker_first_open) {
+      this.color_picker_first_open = false;
+      return;
+    }
+    if (!this.color_picker_hidden && !(document.getElementById('color_picker').contains(evt.target))) {
+      this.colorPickerCancel();
+    }
+  }
+
+  openColorPicker(evt, id) {
+    this.brush = id;
+    this.color_picker_mode = 'rgb';
+    this.color_picker_selected_palette = id;
+    var c = this.palette[id];
+    for (var i=0; i<this.slider_values.length; ++i) {
+      this.slider_values[i] = this.palette[id][i]/255;
+    }
+    this.updateColorPicker(null, -1);
+    this.color_picker_x = evt.clientX-255;
+    this.color_picker_y = evt.clientY;
+    this.color_picker_hidden = false;
+    this.color_picker_first_open = true;
+    return false;
+  }
+
+  addColorToPalette() {
+    this.palette.push([0,0,0,255]);
   }
 
 
@@ -281,6 +310,12 @@ export class ApaxComponent implements OnInit
   toggleTransparency() {
     this.mp.transparency = !this.mp.transparency;
     if (!this.mp.transparency) {
+      this.slider_values[3] = 1.0;
+      for (var i=0; i<this.palette.length; ++i) {
+        if (this.palette[i][3] < 255) {
+          this.palette[i][3] = 255;
+        }
+      }
       for (var i=0; i<this.state.width; ++i) {
         for (var j=0; j<this.state.height; ++j) {
           if (this.state.data[i][j] == -1) {
@@ -291,10 +326,6 @@ export class ApaxComponent implements OnInit
       this.renderImage();
     }
   }
-
-
-
-  constructor() {}
 
   renderImage()
   {
@@ -407,6 +438,7 @@ export class ApaxComponent implements OnInit
       }
       return r;
     }
+    return [p];
   }
   drawPixel(p, v)
   {
@@ -576,6 +608,182 @@ export class ApaxComponent implements OnInit
   }
 
 
+
+
+
+
+
+
+  private sliders;
+  private slider_values;
+  private color_picker_mode = 'rgb';
+  private line_height = 8;
+  private color_picker_border = '';
+  private color_picker_hidden = true;
+  private color_picker_x;
+  private color_picker_y;
+  private color_picker_selected_palette;
+
+  HSVtoRGB(c) {
+
+    var h = c[0];
+    var s = c[1];
+    var v = c[2];
+    var a = c[3];
+
+    var i = Math.floor(h*6);
+    var f = h*6-i;
+    var p = v*(1-s);
+    var q = v*(1-f*s);
+    var t = v*(1-(1-f)*s);
+    var r, g, b;
+
+    switch (i%6) {
+      case 0: r = v, g = t, b = p; break;
+      case 1: r = q, g = v, b = p; break;
+      case 2: r = p, g = v, b = t; break;
+      case 3: r = p, g = q, b = v; break;
+      case 4: r = t, g = p, b = v; break;
+      case 5: r = v, g = p, b = q; break;
+    }
+
+    return [
+      Math.floor(r*255),
+      Math.floor(g*255),
+      Math.floor(b*255),
+      Math.floor(a*255)
+    ];
+  }
+
+  RGBtoHSV(c) {
+
+    var r = c[0];
+    var g = c[1];
+    var b = c[2];
+    var a = c[3];
+
+    var max = Math.max(r, g, b);
+    var min = Math.min(r, g, b);
+    var d = max - min;
+    var h;
+    var s = (max === 0? 0: d / max);
+    var v = max / 255;
+
+    switch (max) {
+      case min: h = 0; break;
+      case r: h = (g-b)+d * (g < b? 6: 0); h/=6*d; break;
+      case g: h = (b-r)+d * 2; h /= 6 * d; break;
+      case b: h = (r-g)+d * 4; h /= 6 * d; break;
+    }
+
+    return [h,s,v,a];
+  }
+
+  toRGB(v) {
+    if (this.color_picker_mode == 'rgb') {
+      return [
+        Math.floor(v[0]*255),
+        Math.floor(v[1]*255),
+        Math.floor(v[2]*255),
+        Math.floor(v[3]*255)
+      ];
+    } else {
+      return this.HSVtoRGB(v);
+    }
+  }
+
+
+  colorPickerSwitchToRGB() {
+    if (this.color_picker_mode != 'rgb') {
+      this.color_picker_mode = 'rgb';
+      this.slider_values = this.HSVtoRGB(this.slider_values);
+      this.slider_values[0] /= 255;
+      this.slider_values[1] /= 255;
+      this.slider_values[2] /= 255;
+      this.slider_values[3] /= 255;
+      this.updateColorPicker(null, -1);
+    }
+  }
+  colorPickerSwitchToHSV() {
+    if (this.color_picker_mode != 'hsv') {
+      this.color_picker_mode = 'hsv';
+      this.slider_values = this.RGBtoHSV([this.slider_values[0]*255,
+                                this.slider_values[1]*255,
+                                this.slider_values[2]*255,
+                                this.slider_values[3]*255]);
+      this.updateColorPicker(null, -1);
+    }
+  }
+  colorSliderMouseDown(evt, id) {
+    this.updateColorPicker(evt, id);
+    return false;
+  }
+  colorSliderMouseMove(evt, id) {
+    if (evt.which === 1) {
+      this.updateColorPicker(evt, id);
+    }
+    return false;
+  }
+  colorPickerOk() {
+    this.palette[this.color_picker_selected_palette] = this.toRGB(this.slider_values);
+    this.color_picker_selected_palette = -1;
+    this.color_picker_hidden = true;
+    this.refreshCursor();
+    this.renderImage();
+  }
+  colorPickerCancel() {
+    this.color_picker_hidden = true;
+  }
+  updateColorPicker(evt, id) {
+    if (evt != null) this.updateSliderValue(evt, id);
+    for (var i=0; i<this.sliders.length; ++i) {
+      this.drawColorSlider(i);
+    }
+    var rgb = this.toRGB(this.slider_values);
+    var rgb_txt = this.toRGBText(rgb);
+    this.color_picker_border = rgb_txt;
+  }
+
+  updateSliderValue(evt, id) {
+    let cnv = this.sliders[id];
+    let rect = cnv.getBoundingClientRect();
+    var v = (evt.clientX - rect.left + 1)/(cnv.width);
+    if (v < 0) v = 0;
+    if (v > 1) v = 1;
+    this.slider_values[id] = v;
+  }
+  drawColorSlider(id) {
+    var v = this.slider_values.slice();
+    var cnv = this.sliders[id];
+    var ctx = cnv.getContext('2d');
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+    ctx.lineWidth = 1;
+    var rgb = this.toRGB(v);
+    var pv = Math.floor(this.slider_values[id]*cnv.width)+0.5;
+    ctx.strokeStyle = this.toRGBText(rgb);
+    ctx.beginPath();
+    ctx.moveTo(pv, 0);
+    ctx.lineTo(pv, cnv.height);
+    ctx.stroke();
+
+    ctx.lineWidth = 2;  
+    for (var i=0; i<cnv.width; ++i) {
+      var t = i/cnv.width;
+      v[id] = t;
+      rgb = this.toRGB(v);
+      
+      var offset = (cnv.height - this.line_height)/2;
+      ctx.strokeStyle = this.toRGBText(rgb);
+      ctx.beginPath();
+      ctx.moveTo(i, offset);
+      ctx.lineTo(i, offset+this.line_height);
+      ctx.stroke();
+    }
+  }
+
+
+
+
   ngOnInit()
   {
     this.canvas = <HTMLCanvasElement> document.getElementById('cmain');
@@ -589,8 +797,16 @@ export class ApaxComponent implements OnInit
 
     this.refreshCursor();
 
-    //Math.seedrandom(this.mp.seed);
-
+    this.sliders = [document.getElementById('slider0'),
+                    document.getElementById('slider1'),
+                    document.getElementById('slider2'),
+                    document.getElementById('slider3')];
+    for (var i=0; i<this.sliders.length; ++i) {
+      this.sliders[i].width = 255;
+      this.sliders[i].height = 20;
+    }
+    this.slider_values = [0,0,0,1];
+    this.updateColorPicker(null, -1);
   }
 
 }

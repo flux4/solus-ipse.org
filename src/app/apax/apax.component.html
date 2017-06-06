@@ -18,9 +18,10 @@
     <div style="margin:5px;">
       <div style="display:inline" class="text_button" (click)="clearImage()">clear</div>&nbsp;
       <div style="display:inline" class="text_button" (click)="saveImage()">save</div>
-      <div style="display:inline" class="text_button" (click)="toggleTransparency()">{{mp.transparency? 'disable transparency': 'enable transparency'}}</div>
     </div>
     <br/>
+    <div style="display:inline" class="text_button" (click)="toggleTransparency()">{{mp.transparency? 'disable transparency': 'enable transparency'}}</div>
+    <br/><br/>
     <div class='menu_title'>symmetry stack</div>
     <table id="symmetry_list">
       <tr *ngFor="let symmetry of symmetries; let i = index">
@@ -73,7 +74,7 @@
     <table id="palettediv">
       <tr *ngFor="let color of palette; let i = index">
         <td>
-          <div (click)="setBrush(i)" class="minipalette" [style.background]="toRGBText(color)" [style.border]="(brush == i)? '0.5px solid white': '0.5px solid dimgrey'"></div>
+          <div (click)="openColorPicker($event,i)" class="minipalette" [style.background]="toRGBText(color)" [style.border]="(brush == i)? '0.5px solid white': '0.5px solid dimgrey'"></div>
           <div>{{toHexText(color)}}</div>
         </td>
         <td>
@@ -83,30 +84,46 @@
         </td>
       </tr>
     </table>
+    <div id="add_color_bt" class="button" title="add new color" (click)="addColorToPalette()">+</div>
   </div>
 </div>
-<div id="color_picker">
-  <table id="sliders">
+<div id="color_picker" [hidden]="color_picker_hidden" [style.left]="color_picker_x+'px'" [style.top]="color_picker_y+'px'">
+  <table id="sliders" [style.border-color]="color_picker_border">
     <tr>
       <td>
-        <canvas id="slider1"></canvas>
+        <canvas id="slider0" (mousedown)="colorSliderMouseDown($event,0)" (mousemove)="colorSliderMouseMove($event,0)"></canvas>
+      </td>
+    </tr>
+    <tr style="border: 1px solid black" [style.border-color]="color_picker_border">
+      <td>
+        <canvas id="slider1" (mousedown)="colorSliderMouseDown($event,1)" (mousemove)="colorSliderMouseMove($event,1)"></canvas>
       </td>
     </tr>
     <tr>
       <td>
-        <canvas id="slider2"></canvas>
+        <canvas id="slider2" (mousedown)="colorSliderMouseDown($event,2)" (mousemove)="colorSliderMouseMove($event,2)"></canvas>
       </td>
     </tr>
-    <tr>
+    <tr [hidden]="!mp.transparency">
       <td>
-        <canvas id="slider3"></canvas>
+        <canvas id="slider3" (mousedown)="colorSliderMouseDown($event,3)" (mousemove)="colorSliderMouseMove($event,3)"></canvas>
       </td>
     </tr>
   </table>
-  <div id="color_picker_footer">
-    <div id="rgb_bt" class="btn">[rgb]</div>
-    <div id="hsv_bt" class="btn inactive">[hsv]</div>
-    <div id="output_color" style="display:inline-block"></div>
-    <div id="output_text" style="display:inline-block"></div>
-  </div>
+  <table id="color_picker_footer">
+    <tr>
+      <td>
+        <div id="rgb_bt" (click)="colorPickerSwitchToRGB()" [class]="(color_picker_mode == 'rgb')? 'button active': 'button inactive'">{{tranparency? 'rgba': 'rgb'}}</div>
+        <div id="hsv_bt" (click)="colorPickerSwitchToHSV()" [class]="(color_picker_mode == 'hsv')? 'button active': 'button inactive'">{{transparency? 'hsva': 'hsv'}}</div>
+      </td>
+      <td>
+        <div id="color_picker_output_color" [style.background-color]="toRGBText(toRGB(slider_values))"></div>
+        <div id="output_text">{{toHexText(toRGB(slider_values))}}</div>
+      </td>
+      <td>
+        <div class="button" (click)="colorPickerOk()">ok</div>
+        <div class="button" (click)="colorPickerCancel()">cancel</div>
+      </td>
+    </tr>
+  </table>
 </div>

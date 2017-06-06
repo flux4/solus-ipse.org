@@ -53,11 +53,7 @@ input:focus {
     float:left;
     margin-left:10px;
 }
-#rightdiv {
-    width:300px;
-    float:right;
-    margin-right:10px;
-}
+
 
 #symmetry_list {
     border-collapse: collapse;
@@ -109,9 +105,18 @@ input:focus {
     border-right: none;
 }
 
+
+
+#rightdiv {
+    width:200px;
+    float:right;
+    margin-right:10px;
+}
 #palettediv {
     border:none;
     border-collapse: collapse;
+    cursor:default;
+    width:100%;
 }
 
 #palettediv td {
@@ -127,16 +132,15 @@ input:focus {
     border-right: none;
 }
 
-
-
-#palettediv {
-    cursor:default;
-}
-
 #palettediv tr td {
     padding:4px;
 }
 
+#add_color_bt {
+  float:right;
+  text-align:center;
+  width:100%;
+}
 
 .button {
     padding-left:4px;
@@ -197,6 +201,51 @@ input:focus {
     width:20px;
 }
 
+
+
+
+#color_picker {
+    width:255px;
+    position:absolute;
+    background-color:black;
+    font-family: 'Courier New';
+    font-size:12px;
+}
+
+#sliders {
+  border-collapse:collapse;
+  /*border:none;*/
+  border-spacing:0px;
+  border-style:solid;
+  border-width:1px;
+}
+#sliders tr td {
+  padding:0px;
+}
+
+#sliders canvas {
+  /*border:0.5px solid grey;*/
+  cursor:default;
+  /*border-left: 1px solid white;
+  border-right: 1px solid white;*/
+  display:block;
+}
+
+#color_picker_footer {
+  margin-top:4px;
+  vertical-align: middle;
+  text-align:center;
+  width:100%;
+}
+#color_picker_footer div {
+  display:inline-block;
+}
+
+
+#color_picker_output_color {
+  width:10px;
+  height:10px;
+}
 
 
 
