@@ -1,7 +1,7 @@
 <div id="container">
   <div id="leftdiv">
     <div class='menu_title'>image settings</div>
-    <table>
+    <table id="image_settings">
       <tr>
         <td>width</td>
         <td><input type="text" id="img_width" [value]="mp.width" (change)="setWidth($event.target.value)"/></td>
@@ -25,7 +25,7 @@
     <table id="symmetry_list">
       <tr *ngFor="let symmetry of symmetries; let i = index">
         <td>
-          <div title="remove" class="button" (click)="deleteSymmetry(i)">&#x2A09;</div>
+          <div title="remove" class="button" (click)="removeSymmetry(i)">&#x2A09;</div>
           <div title="move up" class="button" (click)="moveSymmetryUp(i)">&#8613;</div>
           <div title="move down" class="button" (click)="moveSymmetryDown(i)">&#8615;</div>
         </td>
@@ -60,13 +60,53 @@
             <canvas id="cmain" width="512" height="512" (mousedown)="mouseDown($event)" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)" (mouseleave)="mouseLeave($event)"></canvas>
           </td>
           <td valign="top">
-            <div id="palettediv"></div>
+            <div id="minipalettediv">
+              <div *ngIf="mp.transparency" (click)="setBrush(-1)" class="minipalette eraser" [style.border]="(brush == -1)? '0.5px solid white': '0.5px solid dimgrey'">&#x2A09;</div>
+              <div *ngFor="let color of palette; let i = index" (click)="setBrush(i)" class="minipalette" [style.background]="toRGBText(color)"  [style.border]="(brush == i)? '0.5px solid white': '0.5px solid dimgrey'"></div>
+            </div>
           </td>
         </tr>
       </table>
     </div>
   </div>
   <div id="rightdiv">
-    <span>filler</span>
+    <table id="palettediv">
+      <tr *ngFor="let color of palette; let i = index">
+        <td>
+          <div (click)="setBrush(i)" class="minipalette" [style.background]="toRGBText(color)" [style.border]="(brush == i)? '0.5px solid white': '0.5px solid dimgrey'"></div>
+          <div>{{toHexText(color)}}</div>
+        </td>
+        <td>
+          <div title="move down" class="button" (click)="moveColorDown(i)">&#8615;</div>
+          <div title="move up" class="button" (click)="moveColorUp(i)">&#8613;</div>
+          <div title="remove" class="button" (click)="removeColor(i)">&#x2A09;</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div id="color_picker">
+  <table id="sliders">
+    <tr>
+      <td>
+        <canvas id="slider1"></canvas>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <canvas id="slider2"></canvas>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <canvas id="slider3"></canvas>
+      </td>
+    </tr>
+  </table>
+  <div id="color_picker_footer">
+    <div id="rgb_bt" class="btn">[rgb]</div>
+    <div id="hsv_bt" class="btn inactive">[hsv]</div>
+    <div id="output_color" style="display:inline-block"></div>
+    <div id="output_text" style="display:inline-block"></div>
   </div>
 </div>
