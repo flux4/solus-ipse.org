@@ -113,9 +113,9 @@ export class ApaxComponent implements OnInit
 
   private state: PState;
   private canvas: HTMLCanvasElement;
-  private transforms: any;
+  public transforms: any;
   private mouse_down: boolean = false;
-  private mp: any = {
+  public mp: any = {
     width: 64,
     height: 64,
     scale: 6,
@@ -614,15 +614,15 @@ export class ApaxComponent implements OnInit
 
 
 
-  private sliders;
-  private slider_values;
-  private color_picker_mode = 'rgb';
-  private line_height = 8;
-  private color_picker_border = '';
-  private color_picker_hidden = true;
-  private color_picker_x;
-  private color_picker_y;
-  private color_picker_selected_palette;
+  public sliders;
+  public slider_values;
+  public color_picker_mode = 'rgb';
+  public line_height = 8;
+  public color_picker_border = '';
+  public color_picker_hidden = true;
+  public color_picker_x;
+  public color_picker_y;
+  public color_picker_selected_palette;
 
   HSVtoRGB(c) {
 

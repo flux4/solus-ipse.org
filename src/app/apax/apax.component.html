@@ -113,8 +113,8 @@
   <table id="color_picker_footer">
     <tr>
       <td>
-        <div id="rgb_bt" (click)="colorPickerSwitchToRGB()" [class]="(color_picker_mode == 'rgb')? 'button active': 'button inactive'">{{tranparency? 'rgba': 'rgb'}}</div>
-        <div id="hsv_bt" (click)="colorPickerSwitchToHSV()" [class]="(color_picker_mode == 'hsv')? 'button active': 'button inactive'">{{transparency? 'hsva': 'hsv'}}</div>
+        <div id="rgb_bt" (click)="colorPickerSwitchToRGB()" [class]="(color_picker_mode == 'rgb')? 'button active': 'button inactive'">{{mp.tranparency? 'rgba': 'rgb'}}</div>
+        <div id="hsv_bt" (click)="colorPickerSwitchToHSV()" [class]="(color_picker_mode == 'hsv')? 'button active': 'button inactive'">{{mp.transparency? 'hsva': 'hsv'}}</div>
       </td>
       <td>
         <div id="color_picker_output_color" [style.background-color]="toRGBText(toRGB(slider_values))"></div>
