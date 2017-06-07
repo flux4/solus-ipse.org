@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from './page-not-found.component';
 import { PhotographyComponent } from './photography/photography.component';
 import { PhotographyAlbumComponent } from './photography/photography-album.component';
 import { ApaxComponent } from './apax/apax.component';
+import { KybosComponent } from './kybos/kybos.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ApaxComponent } from './apax/apax.component';
     PageNotFoundComponent,
     PhotographyComponent,
     PhotographyAlbumComponent,
-    ApaxComponent
+    ApaxComponent,
+    KybosComponent
   ],
   imports: [
     BrowserModule,

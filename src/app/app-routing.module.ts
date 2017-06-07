@@ -6,7 +6,7 @@ import { PageNotFoundComponent } from './page-not-found.component';
 import { PhotographyComponent } from './photography/photography.component';
 import { PhotographyAlbumComponent } from './photography/photography-album.component';
 import { ApaxComponent } from './apax/apax.component';
-
+import { KybosComponent } from './kybos/kybos.component';
 
 const app_routes: Routes = [
   {
@@ -89,6 +89,9 @@ const app_routes: Routes = [
   },{
     path: 'programming/apps/apax',
     component: ApaxComponent
+  },{
+    path: 'programming/apps/kybos',
+    component: KybosComponent
   },{
     path: 'photography',
     component: PhotographyComponent
