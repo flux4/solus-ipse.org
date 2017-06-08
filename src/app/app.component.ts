@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router'
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router'
 
 
 
@@ -12,23 +12,35 @@ export class AppComponent
 {
   public header_hidden = false;
   public breadcrumbs = [];
-  public breadcrumb_clicked = false;
 
-  constructor (router: Router) {
-    var bc = this.breadcrumbs;
-    var bcc = this.breadcrumb_clicked;
-    //this.breadcrumb_clicked = false;
+  private router: Router;
+  private activated_route: ActivatedRoute;
+
+  constructor (router: Router, activated_route: ActivatedRoute) {
+    this.router = router;
+    this.activated_route = activated_route;
     router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
-        var new_url = evt.url;
-        // if returning home, clear all breacrumbs
-        if (new_url === '' || new_url === '/') {
-            bc.length = 0;
-        } else {
-          var c = evt.url.split('/');
-          let name: string = c[c.length-1];
-          let path: string = evt.url.substr(1);
-          bc.push({name: name, path: path});
+        var url = this.activated_route.firstChild.snapshot.url;
+        var path = '';
+        this.breadcrumbs = [];
+        for (var i=0; i<url.length; ++i) {
+          if (i > 0) path += '/';
+          path += url[i].path;
+          var title = '';
+          for (var j=0; j<this.router.config.length; ++j) {
+            var rj = this.router.config[j];
+            if (rj.path === path
+                && rj.hasOwnProperty('data')
+                && rj.data.hasOwnProperty('title')) {
+              title = rj.data.title;
+            }
+          }
+          if (title === '') title = url[i].path;
+          this.breadcrumbs.push({
+            title: title,
+            path: path
+          })
         }
       }
     });

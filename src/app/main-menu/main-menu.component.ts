@@ -11,7 +11,7 @@ export class MainMenuComponent implements OnInit {
   
   sub: any;
   route: any;
-  pages = [];
+  public menu = [];
 
   constructor(route: ActivatedRoute)
   {
@@ -19,14 +19,8 @@ export class MainMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    var pages = this.pages;
     this.sub = this.route.data.subscribe(v => {
-      pages.length = 0;
-      for (var i=0; i<v.pages.length; ++i) {
-        pages.push({name:v.pages[i].name,
-                    path:v.pages[i].path,
-                    external:v.pages[i].external});
-      }
+      this.menu = v.menu;
     });
   }
 

@@ -13,53 +13,25 @@ const app_routes: Routes = [
     path: '',
 		component: MainMenuComponent,
     data: {
-      pages:[
-        /*{
-          name:"writing",
-          path:"/writing"
-        },*/{
+      menu:[
+        {
           name:"programming",
           path:"/programming"
         },{
           name:"photography",
           path:"/photography"
-        /*},{
-          name:"inspiration",
-          path:"/inspiration"*/
         }
       ]
     }
-  /*},{
-    path: 'writing',
-    component: MainMenuComponent,
-    data: {
-      pages:[
-        {
-          name:"philosophy",
-          path:"/writing/philosophy"
-        },{
-          name:"criticism",
-          path:"/writing/criticism"
-        },{
-          name:"modern lore",
-          path:"/writing/modernlore"
-        },{
-          name:"ancient lore",
-          path:"/writing/ancientlore"
-        }
-      ]
-    }*/
   },{
     path: 'programming',
     component: MainMenuComponent,
     data: {
-      pages:[
+      title: 'programming',
+      menu:[
         {
           name:"apps",
           path:"/programming/apps"
-        /*},{
-          name:"articles",
-          path:"/programming/articles"*/
         },{
           name:"github",
           path:"https://github.com/simian201",
@@ -75,32 +47,35 @@ const app_routes: Routes = [
     path: 'programming/apps',
     component: MainMenuComponent,
     data: {
-      pages:[
+      title: 'apps',
+      menu:[
         {
           name:'apax',
           path:'/programming/apps/apax'
-        },
-        {
-          name:'kybos',
-          path:'/programming/apps/kybos'
         }
       ]
     }
   },{
     path: 'programming/apps/apax',
-    component: ApaxComponent
+    component: ApaxComponent,
+    data: {
+      title: 'apax'
+    }
   },{
     path: 'programming/apps/kybos',
-    component: KybosComponent
+    component: KybosComponent,
+    data: {
+      title: 'kybos'
+    }
   },{
     path: 'photography',
-    component: PhotographyComponent
+    component: PhotographyComponent,
+    data: {
+      title: 'photography'
+    }
   },{
     path: 'photography/:id',
     component: PhotographyAlbumComponent
-  /*},{
-    path: 'inspiration',
-    component: MainMenuComponent*/
   },{
     path: '**',
     component: PageNotFoundComponent

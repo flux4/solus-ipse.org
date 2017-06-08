@@ -1,5 +1,5 @@
 <ul class="centrallist">
-	<li *ngFor="let page of pages">
+	<li *ngFor="let page of menu">
 		<a *ngIf="page.external; else internallink" href="{{ page.path }}" target="_blank">{{ page.name }}</a>
 		<ng-template #internallink><a routerLink="{{ page.path }}" routerLinkActive="active">{{ page.name }}</a></ng-template>
 	</li>
