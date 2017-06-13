@@ -75,7 +75,10 @@ const app_routes: Routes = [
     }
   },{
     path: 'photography/:id',
-    component: PhotographyAlbumComponent
+    component: PhotographyAlbumComponent,
+    data: {
+      title: 'photography_album'
+    }
   },{
     path: '**',
     component: PageNotFoundComponent

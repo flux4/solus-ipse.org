@@ -5,7 +5,7 @@
 <div class="header" [hidden]="header_hidden">
 	<div>
 		<a id="page_title" routerLink="" routerLinkActive="active">Solus Ipse</a>
-		<a *ngFor="let bc of breadcrumbs" routerLink="{{ bc.path }}" routerLinkActive="active">&nbsp;&nbsp;-&nbsp;&nbsp;{{ bc.title }}</a>    
+		<a [attr.id]="bc.id" *ngFor="let bc of breadcrumbs" routerLink="{{ bc.path }}" routerLinkActive="active" [@routerTransition]="bc.state">&nbsp;&nbsp;-&nbsp;&nbsp;{{bc.title}}</a>
 	</div>
 	<hr/>
 </div>

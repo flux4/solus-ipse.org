@@ -15,13 +15,18 @@
         <td><input type="text" id="img_scale" [value]="mp.scale" (change)="setScale($event.target.value)"/></td>
       </tr>
     </table>
-    <div style="margin:5px;">
-      <div style="display:inline" class="text_button" (click)="clearImage()">clear</div>&nbsp;
-      <div style="display:inline" class="text_button" (click)="saveImage()">save</div>
-    </div>
-    <br/>
-    <div style="display:inline" class="text_button" (click)="toggleTransparency()">{{mp.transparency? 'disable transparency': 'enable transparency'}}</div>
-    <br/><br/>
+    <ul id="button_list">
+      <li>
+        <div style="display:inline-block" class="text_button" (click)="clearImage()">clear</div>&nbsp;
+        <div style="display:inline-block" class="text_button" (click)="saveImage()">save</div>
+      </li>
+      <li>
+        <div style="display:inline-block" class="text_button" (click)="toggleTransparency()">{{mp.transparency? 'disable transparency': 'enable transparency'}}</div>
+      </li>
+      <!--<li>
+        <div style="display:inline-block" class="text_button" (click)="saveToUrl()">save to url</div>
+      </li>-->
+    </ul>
     <div class='menu_title'>symmetry stack</div>
     <table id="symmetry_list">
       <tr *ngFor="let symmetry of symmetries; let i = index">

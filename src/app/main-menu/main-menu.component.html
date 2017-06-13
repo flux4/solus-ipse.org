@@ -1,6 +1,6 @@
 <ul class="centrallist">
 	<li *ngFor="let page of menu">
-		<a *ngIf="page.external; else internallink" href="{{ page.path }}" target="_blank">{{ page.name }}</a>
+		<a *ngIf="page.external; else internallink" href="{{ page.path }}" target="_blank" style="margin-left:8px;">{{ page.name + '&nbsp;🢖'}}</a>
 		<ng-template #internallink><a routerLink="{{ page.path }}" routerLinkActive="active">{{ page.name }}</a></ng-template>
 	</li>
 </ul>

@@ -54,6 +54,14 @@ input:focus {
     margin-left:10px;
 }
 
+#button_list {
+  list-style: none;
+  padding-left:4px;
+}
+
+#button_list > li {
+  margin:6px;
+}
 
 #symmetry_list {
     border-collapse: collapse;
@@ -224,10 +232,7 @@ input:focus {
 }
 
 #sliders canvas {
-  /*border:0.5px solid grey;*/
   cursor:default;
-  /*border-left: 1px solid white;
-  border-right: 1px solid white;*/
   display:block;
 }
 

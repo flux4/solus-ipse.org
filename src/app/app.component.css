@@ -1,8 +1,3 @@
-.header {
-	text-align:center;
-	white-space: nowrap;
-	
-}
 .header_toggle {
 	cursor:pointer;
 	text-align:center;
@@ -21,12 +16,72 @@
     user-select: none;
 }
 
+.header {
+  text-align:center;
+	white-space: nowrap;
+}
 
 #page_title {
 	font-size:24px;
 }
-
 .header > div > a {
-	display:inline;
+	display:inline-block;
 	vertical-align: middle;
 }
+
+#breadcrumb_programming {
+  width:124.37px;
+}
+#breadcrumb_photography {
+  width:118.25px;
+}
+#breadcrumb_photography_album {
+  width:177.29px;
+}
+
+#breadcrumb_apps {
+  width:57.91px;
+}
+
+#breadcrumb_apax {
+  width:57.75px;
+}
+
+
+
+
+/*
+#page_title {
+	font-size:24px;
+}
+.header {
+  display:flex;
+  flex-direction:row;
+  background-color:blue;
+}
+.header > div {
+  display:flex;
+  margin: 0 auto;
+  background-color:red;
+}
+*/
+
+
+/*
+.header {
+  display: table;
+  width:100%;
+	white-space: nowrap;
+}
+
+.header > div {
+  display: table-cell;
+  text-align:center;
+}
+
+.header > div > a {
+  display:inline-block;
+	vertical-align: middle;
+  width:100px;
+}
+*/

@@ -1,5 +1,5 @@
 <div [hidden]="albums != null" style="text-align:center;">{{ error_message }}</div>
-<div class="album_list">
+<div class="album_list" [hidden]="albums == null">
   <ul>
     <li *ngFor="let album of albums">
       <a [routerLink]="['/photography', album.id]" routerLinkActive="active">{{album.name}}</a>

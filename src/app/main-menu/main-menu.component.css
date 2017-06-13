@@ -2,8 +2,13 @@
 {
 	text-align:center;
 	margin:0px;
-	margin-top:10px;
+	margin-top:0px;
 	padding:0px;
+
+  position:absolute;
+  margin: '0 auto';
+  left: 0;
+  right: 0;
 }
 .centrallist > li
 {

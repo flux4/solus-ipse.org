@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; // for query parameters
+import { FadeAnimation } from '../fade.animation';
 
 class PState
 {
@@ -103,8 +105,10 @@ class PState
   selector: 'app-apax',
   templateUrl: './apax.component.html',
   styleUrls: ['./apax.component.css'],
+  animations: [FadeAnimation],
   host: {
     '(document:click)': 'documentClick($event)',
+    '[@routerTransition]': 'true'
   }
 })
 
@@ -119,8 +123,7 @@ export class ApaxComponent implements OnInit
     width: 64,
     height: 64,
     scale: 6,
-    transparency: false,
-    seed: 0 // new Date().getTime();
+    transparency: false
   }
 
   public symmetries: any[] = [
@@ -135,8 +138,14 @@ export class ApaxComponent implements OnInit
   ];
 
   public palette = this.createGrayscalePalette(4);
+  public brush: number = 3;
 
-  public brush: number = 0;
+  private router: Router;
+
+
+  constructor(router: Router) {
+    this.router = router;
+  }
 
   public toRGBText(c): string {
     if (this.mp.transparency) {
@@ -244,14 +253,16 @@ export class ApaxComponent implements OnInit
   }
 
   removeColor(i) {
-    this.palette.splice(i,1);
-    var v = (this.mp.transparency)? -1: 0;
-    this.state.replaceColor(i,v);
-    if (this.brush == i) {
-      this.brush = 0;
-      this.refreshCursor();
+    if (this.palette.length > 1) {
+      this.palette.splice(i,1);
+      var v = (this.mp.transparency)? -1: 0;
+      this.state.replaceColor(i,v);
+      if (this.brush == i) {
+        this.brush = 0;
+        this.refreshCursor();
+      }
+      this.renderImage();
     }
-    this.renderImage();
   }
 
   moveColorUp(i) {
@@ -327,6 +338,39 @@ export class ApaxComponent implements OnInit
     }
   }
 
+
+  
+  /*saveToUrl() {
+    var obj = {
+      width: this.mp.width,
+      height: this.mp.height,
+      scale: this.mp.scale,
+      transparency: this.mp.transparency,
+      transforms: this.transforms,
+      palette: this.palette,
+      image: this.encodeImage()
+    }
+    this.router.navigate([], { queryParams: obj });
+    // { skipLocationChange: true }
+  }
+
+  // https://stackoverflow.com/questions/35688084/how-get-query-params-from-url-in-angular2
+  loadFromUrl() {
+
+  }
+
+  // https://softwareengineering.stackexchange.com/questions/261184/how-would-you-go-about-compressing-a-list-of-integers-that-are-non-unique-and-re
+  encodeImage(): string {
+    let char_set = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    let r: string = "";
+    for (var i=0; i<this.state.width; ++i) {
+      for (var j=0; j<this.state.height; ++j) {
+        r += char_set.charAt(this.state.data[i][j]);
+      }
+    }
+    return r;
+  }*/
+
   renderImage()
   {
     var ctx = this.canvas.getContext("2d");
@@ -391,7 +435,7 @@ export class ApaxComponent implements OnInit
         p[0]*sym.sa + p[1]*sym.ca];
   }
 
-  transform(sym: any, p) {
+  transform(sym: any, p: number[]) {
     if (sym.type == 'rotate') {
       var r = [];
       p = this.state.toCenter(p);
@@ -407,7 +451,7 @@ export class ApaxComponent implements OnInit
     } else if (sym.type == 'reflect') {
       var ai = p[0], aj = p[1];
       var bi = this.state.width-ai-1, bj = this.state.height-aj-1;
-      if (sym.value == '|') 
+      if (sym.value == '|')
       {
         return [[ai,aj],[bi,aj]];
       }
@@ -792,11 +836,8 @@ export class ApaxComponent implements OnInit
     var ctx = this.canvas.getContext("2d");
 
     this.state = new PState(this.mp);
-
     this.renderImage();
-
     this.refreshCursor();
-
     this.sliders = [document.getElementById('slider0'),
                     document.getElementById('slider1'),
                     document.getElementById('slider2'),
