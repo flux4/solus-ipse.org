@@ -23,12 +23,51 @@
   width:100%;
 }
 
-#randomizebt {
+#randomize_angles_bt, #reset_angles_bt {
   font-size:24px;
   cursor:default;
   text-align:center;
+  display:inline;
 }
 
+#angles_table input {
+  margin-left:0;
+  margin-right:0;
+  vertical-align: middle;
+}
+
+
+#angles_table td:nth-child(1) {
+  padding:4px;
+  white-space: nowrap;
+}
+
+#angles_table td:nth-child(2) {
+  text-align:right;
+  margin-right: 0;
+  padding-right: 0;
+  margin-left:4px;
+  cursor:default;
+  vertical-align: middle;
+}
+
+#angles_table td:nth-child(3) {
+  padding-left:0;
+  padding-right:0;
+}
+
+#angles_table td:nth-child(4) {
+  text-align:left;
+  margin-left:0;
+  padding-left:0;
+  margin-right:4px;
+  cursor:default;
+  vertical-align: middle;
+}
+
+#angles_table td:nth-child(5) {
+  padding:4px;
+}
 
 
 #maindiv {

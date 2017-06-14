@@ -36,19 +36,24 @@
         </td>
         <td>&nbsp;{{ mp.line_width }}&nbsp;</td>
       </tr>
+    </table>
+    <table id="angles_table">
       <tr>
         <td></td>
+        <td>&#9665;</td>
         <td>
-          <div id="randomizebt" (click)="randomizeAngles()">&#9860;</div>
+          <div id="randomize_angles_bt" (click)="randomizeAngles()">&#9860;</div>
+          <div id="reset_angles_bt" (click)="resetAngles()">&#8676;</div>
         </td>
+        <td>&#9655;</td>
         <td></td>
       </tr>
-      <tr *ngFor="let trn of transforms">
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>{{trn.index_i+'-'+trn.index_j+':'+trn.angle_index}}</td>
+      <tr *ngFor="let trn of transforms; let i = index">
+        <td>{{trn.index_i+'-'+trn.index_j}}</td>
+        <td (click)="leftAnimationArrowClicked(i)">&#9665;</td>
+        <td><input type="range" min="0" [max]="mp.n_divisions-1" value="0" (input)="angleChanged(i,$event.target.value)"></td>
+        <td (click)="rightAnimationArrowClicked(i)">&#9655;</td>
+        <td>{{ trn.angle_index }}</td>
       </tr>
     </table>
   </div>
