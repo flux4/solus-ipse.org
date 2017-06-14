@@ -52,6 +52,10 @@ const app_routes: Routes = [
         {
           name:'apax',
           path:'/programming/apps/apax'
+        },
+        {
+          name:'kybos',
+          path:'/programming/apps/kybos'
         }
       ]
     }

@@ -1,0 +1,46 @@
+
+#outerdiv {
+  height:100%;
+}
+
+#leftdiv {
+  border-right: 0.5px solid dimgrey;
+  width:15%;
+  height:100%;
+  margin:0px;
+  padding:0px;
+  display:inline-block;
+  vertical-align: top;
+}
+
+#leftdiv table {
+  width:100%;
+  padding:4px;
+  text-align:center;
+}
+
+#leftdiv input {
+  width:100%;
+}
+
+#randomizebt {
+  font-size:24px;
+  cursor:default;
+  text-align:center;
+}
+
+
+
+#maindiv {
+  text-align:center;
+  width:84%;
+  height:100%;
+  margin:0px;
+  padding:0px;
+  display:inline-block;
+}
+
+#cmain {
+  width:100%;
+  height:100%;
+}

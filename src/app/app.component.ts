@@ -17,19 +17,10 @@ export class AppComponent
   private router: Router;
   private activated_route: ActivatedRoute;
 
-
-  calculateWidth(txt) {
-    var c=document.createElement('canvas');
-    var ctx=c.getContext('2d');
-    ctx.font = '12px Open Sans';
-    var length = ctx.measureText(txt).width;
-    console.log(length);
-    return length;
-  }
-
   constructor (router: Router, activated_route: ActivatedRoute) {
     this.router = router;
     this.activated_route = activated_route;
+    
     router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd) {
         var url = this.activated_route.firstChild.snapshot.url;
@@ -42,12 +33,10 @@ export class AppComponent
           var bc_id = 'breadcrumb_'+path_part;
           path += path_part;
 
-
           // look through the router to find the title for this path
           var title = '';
           for (var j=0; j<this.router.config.length; ++j) {
             var rj = this.router.config[j];
-            console.log(rj.path);
             if (rj.path === path
                 && rj.hasOwnProperty('data')
                 && rj.data.hasOwnProperty('title')) {

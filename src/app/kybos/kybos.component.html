@@ -1,2 +1,58 @@
-<div>
+<div id="outerdiv">
+  <div id="leftdiv">
+    <table>
+      <tr>
+        <td title="number of dimensions">N</td>
+        <td>
+          <input type="range" min="2" max="8" value="4" (input)="setDimensions($event.target.value)">
+        </td>
+        <td>&nbsp;{{ mp.n_dimensions }}&nbsp;</td>
+      </tr>
+      <tr>
+        <td title="number of angle divisions, as a power of 2">D</td>
+        <td>
+          <input type="range" min="1" max="5" value="3" (input)="setDivisions($event.target.value)">
+        </td>
+        <td>&nbsp;{{ mp.n_divisions }}&nbsp;</td>
+      </tr>
+      <tr>
+        <td title="animation speed">S</td>
+        <td>
+          <input type="range" min="0" max="100" value="10" (input)="setSpeed($event.target.value)">
+        </td>
+        <td>&nbsp;{{ mp.speed }}&nbsp;</td>
+      </tr>
+      <tr>
+        <td title="how accentuated transitions are between angle divisions">A</td>
+        <td>
+          <input type="range" min="0" max="99" value="95" (input)="setAccentuation($event.target.value)">
+        </td>
+        <td>&nbsp;{{ mp.accentuation }}&nbsp;</td>
+      </tr>
+      <tr>
+        <td title="line width">W</td>
+        <td>
+          <input type="range" min="1" max="20" value="4" (input)="setLineWidth($event.target.value)">
+        </td>
+        <td>&nbsp;{{ mp.line_width }}&nbsp;</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <div id="randomizebt" (click)="randomizeAngles()">&#9860;</div>
+        </td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let trn of transforms">
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>{{trn.index_i+'-'+trn.index_j+':'+trn.angle_index}}</td>
+      </tr>
+    </table>
+  </div>
+  <div id="maindiv">
+    <canvas id="cmain"></canvas>
+  </div>
 </div>
