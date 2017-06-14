@@ -3,6 +3,18 @@
   height:100%;
 }
 
+#outerdiv > div {
+  display:inline-block;
+}
+
+
+#rightdiv {
+  width:15%;
+  height:100%;
+  vertical-align:top;
+  border-left: 0.5px solid dimgrey;
+}
+
 #leftdiv {
   border-right: 0.5px solid dimgrey;
   width:15%;
@@ -13,13 +25,13 @@
   vertical-align: top;
 }
 
-#leftdiv table {
+#leftdiv table, #rightdiv table {
   width:100%;
   padding:4px;
   text-align:center;
 }
 
-#leftdiv input {
+#leftdiv input, #rightdiv input {
   width:100%;
 }
 
@@ -72,7 +84,7 @@
 
 #maindiv {
   text-align:center;
-  width:84%;
+  width:69%;
   height:100%;
   margin:0px;
   padding:0px;

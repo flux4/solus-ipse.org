@@ -96,6 +96,7 @@ export class KybosComponent implements OnInit {
 
   private transforms: Transform[];
   private hypercube: Hypercube;
+  private any_animated: boolean;
 
   private cnv: HTMLCanvasElement;
 
@@ -128,6 +129,7 @@ export class KybosComponent implements OnInit {
   }
   setDivisions(n_divisions) {
     this.mp.n_divisions = Math.pow(2,n_divisions);
+    this.setAllAnglesToIndex();
   }
   setSpeed(speed) {
     this.mp.speed = speed;
@@ -151,36 +153,89 @@ export class KybosComponent implements OnInit {
 		return a;
 	}
 
+  angleToIndex(angle: number) {
+    var n_divisions = this.mp.n_divisions;
+    var ind = angle/(Math.PI*2)*n_divisions;
+		ind = (ind > n_divisions - 0.5)? 0: Math.round(ind);
+    return ind;
+  }
+  indexToAngle(angle_index: number) {
+    return Math.PI*2*angle_index/this.mp.n_divisions;
+  }
+
   randomizeAngles() {
     var n_divisions = this.mp.n_divisions;
     for (var i=0; i<this.transforms.length; ++i) {
       var v = Math.random();
       var ind = Math.floor(v*n_divisions);
       this.transforms[i].angle_index = ind;
-      this.transforms[i].angle = v*Math.PI*2;
-      this.transforms[i].update();
+      this.transforms[i].goal_angle = (ind/n_divisions)*Math.PI*2;
     }
-    this.draw();
   }
 
   resetAngles() {
     for (var i=0; i<this.transforms.length; ++i) {
-      this.transforms[i].angle = 0;
+      this.transforms[i].goal_angle = 0;
       this.transforms[i].angle_index = 0;
-      this.transforms[i].update();
     }
-    this.draw();
+  }
+
+  setAllAnglesToIndex() {
+    for (var i=0; i<this.transforms.length; ++i) {
+      this.transforms[i].angle = this.indexToAngle(this.transforms[i].angle_index);
+    }
   }
 
   leftAnimationArrowClicked(i) {
     this.transforms[i].animate = -1;
+    this.setAllAnglesToIndex();
+    this.any_animated = true;
   }
   rightAnimationArrowClicked(i) {
     this.transforms[i].animate = 1;
+    this.setAllAnglesToIndex();
+    this.any_animated = true;
+  }
+  leftAnimateAll() {
+    for (var i=0; i<this.transforms.length; ++i) {
+      this.transforms[i].animate = -1;
+    }
+    this.setAllAnglesToIndex();
+    this.any_animated = true;
+  }
+  rightAnimateAll() {
+    for (var i=0; i<this.transforms.length; ++i) {
+      this.transforms[i].animate = 1;
+    }
+    this.setAllAnglesToIndex();
+    this.any_animated = true;
+
+  }
+  checkAnyAnimated() {
+    var any_animated = false;
+    for (var i=0; i<this.transforms.length; ++i) {
+      if (this.transforms[i].animate != 0) {
+        any_animated = true;
+      }
+    }
+    this.any_animated = any_animated;
+  }
+  stopAnimation(i) {
+    var trn = this.transforms[i];
+    trn.animate = 0;
+    trn.angle = this.indexToAngle(trn.angle_index);
+    trn.update();
+    this.checkAnyAnimated();
+  }
+  stopAllAnimation() {
+    for (var i=0; i<this.transforms.length; ++i) {
+      this.transforms[i].animate = 0;
+    }
+    this.any_animated = false;
   }
   angleChanged(i, v) {
     this.transforms[i].angle_index = v;
-    this.transforms[i].goal_angle = Math.PI*2*v/this.mp.n_divisions;
+    this.transforms[i].goal_angle = this.indexToAngle(v);
   }
 
 
@@ -195,6 +250,7 @@ export class KybosComponent implements OnInit {
     }
     this.hypercube = hc;
     this.transforms = trn;
+    this.any_animated = false;
   }
 
   animate(kbc: KybosComponent) {
@@ -206,17 +262,18 @@ export class KybosComponent implements OnInit {
 
   draw() {
 
-    let speed:number = this.mp.speed;
+    let speed:number = this.mp.speed/100;
     let n_divisions:number = this.mp.n_divisions;
-    let accentuation:number = this.mp.accentuation;
+    let accentuation:number = this.mp.accentuation/100;
 
     for (var i=0; i<this.transforms.length; ++i) {
       let trn: Transform = this.transforms[i];
 
       // update movement toward goal angle
       if (trn.goal_angle != -1) {
-        trn.angle += (trn.goal_angle - trn.angle)*speed*10;
-        if (Math.abs(trn.angle-trn.goal_angle) < 0.01) {
+        trn.angle += (trn.goal_angle - trn.angle)*speed*2;
+        trn.angle = this.wrapAngle(trn.angle);
+        if (Math.abs(trn.angle-trn.goal_angle) < 0.001) {
           trn.angle = trn.goal_angle;
           trn.goal_angle = -1;
         }
@@ -225,14 +282,11 @@ export class KybosComponent implements OnInit {
 
       // animate movement
       if (trn.animate != 0) {
-
         var ps = speed + speed*Math.sin(trn.angle*n_divisions-Math.PI/2)*accentuation;
-        trn.angle = this.wrapAngle(trn.angle + ps);
+        trn.angle += (trn.animate == -1)? -ps: ps;
+        trn.angle = this.wrapAngle(trn.angle);
+        trn.angle_index = this.angleToIndex(trn.angle);
         trn.update();
-
-        var ind = trn.angle/Math.PI*2*n_divisions;
-				ind = (ind > n_divisions - 0.5)? 0: Math.round(ind);
-        trn.angle_index = ind;
       }
     }
 
@@ -242,7 +296,7 @@ export class KybosComponent implements OnInit {
 
     var w = this.cnv.width;
     var h = this.cnv.height;
-    var s = Math.min(w, h)/5;
+    var s = Math.min(w, h)*0.19;
     var hc = this.hypercube;
     var trn = this.transforms;
     var p2d = [];
@@ -268,9 +322,5 @@ export class KybosComponent implements OnInit {
 		}
 		ctx.stroke();
   }
-
-
-
-
 
 }
