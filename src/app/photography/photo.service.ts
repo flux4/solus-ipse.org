@@ -14,24 +14,7 @@ export class PhotoService {
     this.http = http;
   }
 
-  ngOnInit() {
-    /*var temp = this.http.get('assets/flickr.json')
-      //.map((response: Response) => {
-      //  this.temp_message = response.json();
-      //})
-      .map(this.parseResponse)
-      .catch((error: any, caught:Observable<any>) => {
-        this.temp_message = "error retrieving flickr albums";
-        console.log('!!');
-        return null;
-      });
-    console.log(temp);*/
-
-
-  }
-  /*recieveApiKey(data) {
-
-  }*/
+  ngOnInit() {}
 
 
   getAlbumList(success, error) {
@@ -65,16 +48,16 @@ export class PhotoService {
   }
 
 
-  getAlbumDetails(album_id, success, error) {
+  getAlbumPhotos(album_id, success, error) {
     var http = this.http;
     http.get('assets/photo_api_key.json')
               .map(res => res.json())
-              .subscribe(data => this.getAlbumDetails2(data, album_id, success, error, http),
+              .subscribe(data => this.getAlbumPhotos2(data, album_id, success, error, http),
               err => error(err));
   }
 
-  private getAlbumDetails2(api_key, album_id, success, error, http) {
-    var album_url = "https://api.flickr.com/services/rest/?&method=flickr.photosets.getPhotos&api_key="+api_key.key+"&photoset_id="+album_id+"&format=json&nojsoncallback=1";
+  private getAlbumPhotos2(api_key, album_id, success, error, http) {
+    var album_url = "https://api.flickr.com/services/rest/?&method=flickr.photosets.getPhotos&api_key="+api_key.key+"&photoset_id="+album_id+"&extras=url_c&format=json&nojsoncallback=1";
     http.get(album_url)
           .map(res => res.json())
           .subscribe(data => this.parseFlickrAlbum(data, api_key, album_id, success, error, http),
@@ -82,28 +65,17 @@ export class PhotoService {
   }
 
   private parseFlickrAlbum(flickr_album_data, api_key, album_id, success, error, http) {
-    var photo_id = flickr_album_data.photoset.photo[0].id;
-    var album_name = flickr_album_data.photoset.title;
-    var get_sizes_url = "https://api.flickr.com/services/rest/?&method=flickr.photos.getSizes&api_key=70967cdf22e2f49334dda8d0344c2a96&photo_id="+photo_id+"&format=json&nojsoncallback=1";
-    http.get(get_sizes_url)
-          .map(res => res.json())
-          .subscribe(data => this.parseSizes(data, album_name, api_key, album_id, success, error),
-          err => error(err));
-  }
-
-
-  private parseSizes(size_data, album_name, api_key, album_id, success, error) {
-    var fpu = size_data.sizes.size[size_data.sizes.size.length-2].source;
+    var p = flickr_album_data.photoset.photo
+    var r = [];
+    for (var i=0; i<p.length; ++i) {
+      r.push({
+        "width":p[i].width_c,
+        "height":p[i].height_c,
+        "url":p[i].url_c
+      });
+    }
     success({
-      "id":album_id,
-      "name":album_name,
-      "first_photo_url": fpu
+      "photos":r
     });
   }
-
-
-
-
-
-
 }
