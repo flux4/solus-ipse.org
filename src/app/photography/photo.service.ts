@@ -57,7 +57,7 @@ export class PhotoService {
   }
 
   private getAlbumPhotos2(api_key, album_id, success, error, http) {
-    var album_url = "https://api.flickr.com/services/rest/?&method=flickr.photosets.getPhotos&api_key="+api_key.key+"&photoset_id="+album_id+"&extras=url_c&format=json&nojsoncallback=1";
+    var album_url = "https://api.flickr.com/services/rest/?&method=flickr.photosets.getPhotos&api_key="+api_key.key+"&photoset_id="+album_id+"&extras=url_l&format=json&nojsoncallback=1";
     http.get(album_url)
           .map(res => res.json())
           .subscribe(data => this.parseFlickrAlbum(data, api_key, album_id, success, error, http),
@@ -66,12 +66,13 @@ export class PhotoService {
 
   private parseFlickrAlbum(flickr_album_data, api_key, album_id, success, error, http) {
     var p = flickr_album_data.photoset.photo
+    console.log(p);
     var r = [];
     for (var i=0; i<p.length; ++i) {
       r.push({
-        "width":p[i].width_c,
-        "height":p[i].height_c,
-        "url":p[i].url_c
+        "width":p[i].width_l,
+        "height":p[i].height_l,
+        "url":p[i].url_l
       });
     }
     success({

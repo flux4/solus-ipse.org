@@ -86,7 +86,7 @@ class Transform {
 })
 export class KybosComponent implements OnInit {
 
-  private mp = {
+  public mp = {
     n_dimensions: 4,
     n_divisions: 8,
     speed: 10,
@@ -94,11 +94,11 @@ export class KybosComponent implements OnInit {
     line_width: 1
   };
 
-  private transforms: Transform[];
-  private hypercube: Hypercube;
-  private any_animated: boolean;
+  public transforms: Transform[];
+  public hypercube: Hypercube;
+  public any_animated: boolean;
 
-  private cnv: HTMLCanvasElement;
+  public cnv: HTMLCanvasElement;
 
   private ngzone: NgZone; // for refreshing canvas dimensions
   constructor(ngzone: NgZone) {
