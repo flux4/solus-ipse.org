@@ -1,2 +1,2 @@
 # solus-ipse.org
-A personal website in Angular 4
+> A personal website in Angular 4
